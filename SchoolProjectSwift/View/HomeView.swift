@@ -13,7 +13,7 @@ import Nuke
 
 struct HomeView: View {
     @State  var myProfile: User?
-    @EnvironmentObject private var vm: TMDBViewModel
+    @EnvironmentObject private var viewModel: TMDBViewModel
     private let pipeline = ImagePipeline {
         $0.dataCache = try? DataCache(name: "com.myapp.datacache")
         $0.dataCachePolicy = .storeOriginalData
@@ -26,7 +26,7 @@ struct HomeView: View {
                         Image(systemName: "house")
                     }
                 UpcomingView()
-                    .environmentObject(vm)
+                    .environmentObject(viewModel)
                     .tabItem {
                         Image(systemName: "clock.fill")
 

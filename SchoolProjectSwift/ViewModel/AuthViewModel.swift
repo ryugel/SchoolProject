@@ -73,7 +73,7 @@ class RegisterViewModel: ObservableObject {
     @Published var userName: String = ""
     @Published var password: String = ""
     @Published var password2: String = ""
-    @Published var ProfilePic: Data?
+    @Published var profilePic: Data?
     @Published var showError = false
     @Published var errorMsg = ""
     @Published var isLoading = false
@@ -85,7 +85,7 @@ class RegisterViewModel: ObservableObject {
     @AppStorage("user_UID") var userUID = ""
 
     func condition() -> Bool {
-           return userName.isEmpty || email.isEmpty || password.isEmpty || password != password2 || password.count <= 8 || ProfilePic == nil
+           return userName.isEmpty || email.isEmpty || password.isEmpty || password != password2 || password.count <= 8 || profilePic == nil
        }
 
     func registerAccount() {
@@ -99,7 +99,7 @@ class RegisterViewModel: ObservableObject {
             }
 
             guard let userID = Auth.auth().currentUser?.uid else { return }
-            guard let imageData = self.ProfilePic else { return }
+            guard let imageData = self.profilePic else { return }
 
             let storageRef = Storage.storage().reference().child("Profile_Images").child(userID)
             _ = storageRef.putData(imageData, metadata: nil) { _, error in

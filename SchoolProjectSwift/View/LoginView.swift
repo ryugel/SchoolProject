@@ -91,7 +91,7 @@ struct SignView: View {
                     .foregroundColor(Color.red)
                 Divider()
                 ZStack {
-                    if let ProfilePic = viewModel.ProfilePic, let image = UIImage(data: ProfilePic) {
+                    if let profilePic = viewModel.profilePic, let image = UIImage(data: profilePic) {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -144,7 +144,7 @@ struct SignView: View {
                 Task {
                     do {
                         guard let imageData = try await newValue.loadTransferable(type: Data.self) else { return }
-                        viewModel.ProfilePic = imageData
+                        viewModel.profilePic = imageData
                     } catch {
 
                     }

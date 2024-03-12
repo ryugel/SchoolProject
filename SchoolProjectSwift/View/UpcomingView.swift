@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UpcomingView: View {
-    @EnvironmentObject private var vm: TMDBViewModel
+    @EnvironmentObject private var viewModel: TMDBViewModel
     @Environment(\.horizontalSizeClass) var sizeClass
 
     var body: some View {
@@ -25,18 +25,18 @@ struct UpcomingView: View {
                 }
                 if sizeClass == .regular {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 20), count: 3), spacing: 20) {
-                        ForEach(vm.upcoming) { upcoming in
+                        ForEach(viewModel.upcoming) { upcoming in
                             UpcomingRow(tmdb: upcoming)
                         }
                     }
                 } else {
-                    ForEach(vm.upcoming) { upcoming in
+                    ForEach(viewModel.upcoming) { upcoming in
                         UpcomingRow(tmdb: upcoming)
                     }
                 }
             }
             .task {
-                vm.fetchTMDBData(tmdbUrl: .upcoming)
+                viewModel.fetchTMDBData(tmdbUrl: .upcoming)
             }
             .navigationTitle("Upcoming")
             .scrollIndicators(.hidden)

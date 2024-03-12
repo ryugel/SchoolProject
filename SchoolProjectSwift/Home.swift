@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct Home: View {
-    @EnvironmentObject private var vm: TMDBViewModel
+    @EnvironmentObject private var viewModel: TMDBViewModel
     var body: some View {
         VStack {
             ScrollView {
                 AiringView()
-                    .environmentObject(vm)
+                    .environmentObject(viewModel)
                 VStack(alignment: .leading) {
                     Text("Popular")
                         .bold()
@@ -21,7 +21,7 @@ struct Home: View {
                         .padding(.leading)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(vm.popular, id: \.self) {top in
+                            ForEach(viewModel.popular, id: \.self) {top in
                                 TMDBCard(tmdb: top)
                             }
                         }
@@ -32,7 +32,7 @@ struct Home: View {
                         .padding(.leading)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(vm.topRated, id: \.self) {top in
+                            ForEach(viewModel.topRated, id: \.self) {top in
                                 TMDBCard(tmdb: top)
                             }
                         }
@@ -43,7 +43,7 @@ struct Home: View {
                         .padding(.leading)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(vm.upcoming, id: \.self) {upcoming in
+                            ForEach(viewModel.upcoming, id: \.self) {upcoming in
                                 TMDBCard(tmdb: upcoming)
                             }
                         }
@@ -57,17 +57,17 @@ struct Home: View {
 
             .scrollIndicators(.hidden)
             .task {
-                vm.fetchTMDBData(tmdbUrl: .popular)
-                vm.fetchTMDBData(tmdbUrl: .topRated)
-                vm.fetchTMDBData(tmdbUrl: .upcoming)
-                vm.fetchTMDBData(tmdbUrl: .trending)
+                viewModel.fetchTMDBData(tmdbUrl: .popular)
+                viewModel.fetchTMDBData(tmdbUrl: .topRated)
+                viewModel.fetchTMDBData(tmdbUrl: .upcoming)
+                viewModel.fetchTMDBData(tmdbUrl: .trending)
             }
         }
     }
     var trending: some View {
         return ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(vm.trendings) {trend in
+                ForEach(viewModel.trendings) {trend in
                     TMDBCard(tmdb: trend)
                 }
             }

@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 struct TMDBDetailView: View {
     @StateObject private var userViewModel = UserViewModel()
-    @StateObject private var vm = YoutubeViewModel()
+    @StateObject private var viewModel = YoutubeViewModel()
     var show: TMDB
     @State var myProfile: User?
     @State private var isFavorited = false
@@ -21,7 +21,7 @@ struct TMDBDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(vm.trailers, id: \.id) { item in
+                    ForEach(viewModel.trailers, id: \.id) { item in
                         TrailerView(videoID: item.id?.videoID ?? "")
                             .frame(height: sizeClass == .regular ? 600:200)
                     }
@@ -74,7 +74,7 @@ struct TMDBDetailView: View {
             .navigationBarTitle((show.originalTitle ?? show.name) ?? "", displayMode: .inline)
         }
         .task {
-            vm.fetchTrailer(query: "\(show.originalTitle ?? show.name ?? show.originalName ?? "") trailer")
+            viewModel.fetchTrailer(query: "\(show.originalTitle ?? show.name ?? show.originalName ?? "") trailer")
             await userViewModel.fetchUser()
             await getUser()
             isFavorited = isInFavorites

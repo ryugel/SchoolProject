@@ -10,7 +10,7 @@ import NukeUI
 import Nuke
 
 struct AiringView: View {
-    @EnvironmentObject private var vm: TMDBViewModel
+    @EnvironmentObject private var viewModel: TMDBViewModel
     private let pipeline = ImagePipeline {
         $0.dataCache = try? DataCache(name: "com.myapp.datacache")
         $0.dataCachePolicy = .storeOriginalData
@@ -32,7 +32,7 @@ struct AiringView: View {
 
                     ScrollView(.horizontal) {
                         HStack(spacing: 5) {
-                            ForEach(vm.airing) { airing in
+                            ForEach(viewModel.airing) { airing in
                                 GeometryReader { proxy in
                                     let cardSize = proxy.size
 
@@ -87,7 +87,7 @@ struct AiringView: View {
         }
         .scrollIndicators(.hidden)
         .onAppear {
-            vm.fetchTMDBData(tmdbUrl: .airing)
+            viewModel.fetchTMDBData(tmdbUrl: .airing)
         }
     }
 }
