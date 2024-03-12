@@ -33,9 +33,7 @@ struct TMDB: Codable, Hashable, Identifiable {
     let name: String?
     let voteAverage: Double
     let voteCount: Int
-    
-   
-    
+
     enum CodingKeys: String, CodingKey {
         case adult
         case backdropPath = "backdrop_path"
@@ -57,5 +55,3 @@ struct TMDB: Codable, Hashable, Identifiable {
         return "https://image.tmdb.org/t/p/w300"
     }
 }
-
-

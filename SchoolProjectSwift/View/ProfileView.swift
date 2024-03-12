@@ -21,17 +21,20 @@ struct ProfileView: View {
     private let pipeline = ImagePipeline {
         $0.dataCache = try? DataCache(name: "com.myapp.datacache")
         $0.dataCachePolicy = .storeOriginalData
+        $0.imageCache = try? ImageCache(name: "com.myapp.imagecache")
+        $0.imageCache?.countLimit = 100
+        $0.imageCache?.costLimit = 1024 * 1024 * 100
     }
-    
+
     @AppStorage("is_logged") var isLogged = false
     @Environment(\.horizontalSizeClass) var sizeClass
     var body: some View {
            VStack {
-               LazyImage(url: myProfile.pictureURL){ image in
+               LazyImage(url: myProfile.pictureURL) { image in
                    image.image?
                        .resizable()
                        .aspectRatio(contentMode: .fill)
-                       .frame(width: sizeClass == .regular ? 200 : 125, height: sizeClass == .regular ? 200 : 125) 
+                       .frame(width: sizeClass == .regular ? 200 : 125, height: sizeClass == .regular ? 200 : 125)
                        .clipShape(Circle())
                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
                        .shadow(radius: 10)
@@ -39,14 +42,14 @@ struct ProfileView: View {
                }
                .processors([.resize(size: .init(width: sizeClass == .regular ? 200 : 125, height: sizeClass == .regular ? 200 : 125))])
                .pipeline(pipeline)
-               
+
                Text(myProfile.username)
                    .font(.title)
                    .bold()
                    .padding(.bottom, sizeClass == .regular ? 60 : 30)
-               
+
                Spacer()
-               
+
                VStack(spacing: sizeClass == .regular ? 40 : 20) {
                    ProfileOptionButton(title: "Reset Password", action: {
                        resetPassword()
@@ -59,20 +62,20 @@ struct ProfileView: View {
                    })
                }
            }
-           .overlay{
+           .overlay {
                LoadingView(showing: $isLoading)
            }
            .padding()
            .preferredColorScheme(.dark)
-           .alert(errorMsg, isPresented: $showError){}
-           .alert("Link sent", isPresented: $alert){}
+           .alert(errorMsg, isPresented: $showError) {}
+           .alert("Link sent", isPresented: $alert) {}
        }
-    
-    func logOut(){
+
+    func logOut() {
         try? Auth.auth().signOut()
         isLogged = false
     }
-    func deleteAccount(){
+    func deleteAccount() {
         isLoading = true
         Task {
             do {
@@ -82,7 +85,7 @@ struct ProfileView: View {
                 try await Firestore.firestore().collection("Users").document(userID).delete()
                 try await Auth.auth().currentUser?.delete()
                 isLogged = false
-            }catch {
+            } catch {
                 await displayErrorMsg(error)
             }
         }
@@ -109,7 +112,7 @@ struct ProfileView: View {
 struct ProfileOptionButton: View {
     let title: String
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             Text(title)

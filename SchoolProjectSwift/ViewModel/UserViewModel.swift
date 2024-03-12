@@ -26,9 +26,7 @@ class UserViewModel: ObservableObject {
             print("Error fetching user: \(error)")
         }
     }
-    
-    
-    
+
     func addToFavorites(_ item: TMDB) {
         guard var currentUser = user else { return }
         if !currentUser.favorites.contains(where: { $0.id == item.id }) {
@@ -49,9 +47,9 @@ class UserViewModel: ObservableObject {
         user?.favorites.removeAll()
         updateUser(user ?? currentUser)
     }
-    
+
     private func updateUser(_ user: User) {
-        let userID = user.userUID 
+        let userID = user.userUID
         do {
             try db.collection("Users").document(userID).setData(from: user)
         } catch let error {

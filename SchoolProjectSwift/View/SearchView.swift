@@ -12,13 +12,13 @@ import Nuke
 struct SearchView: View {
     @StateObject private var viewModel = SearchViewModel()
     @Environment(\.horizontalSizeClass) var sizeClass
-    
+
     var body: some View {
         VStack {
-            
+
             if viewModel.searchText.isEmpty {
                 ContentUnavailableView("Search", systemImage: "magnifyingglass", description: Text("Are you looking for something ?"))
-            }else {
+            } else {
                 ScrollView {
                     LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 20), count: sizeClass == .regular ? 4:3), spacing: 10) {
                         ForEach(viewModel.searchedMovies) { movie in
@@ -33,7 +33,7 @@ struct SearchView: View {
                 }
             }
         }
-        .navigationBarItems(leading:  SearchBar(txt: $viewModel.searchText))
+        .navigationBarItems(leading: SearchBar(txt: $viewModel.searchText))
         .onAppear {
             viewModel.searchTMDB()
         }
@@ -46,7 +46,7 @@ struct MovieItemView: View {
         $0.dataCachePolicy = .storeOriginalData
     }
     @Environment(\.horizontalSizeClass) var sizeClass
-    
+
     var body: some View {
         VStack {
             LazyImage(url: URL(string: movie.imageUrl + (movie.posterPath ?? movie.backdropPath ?? ""))) { image in

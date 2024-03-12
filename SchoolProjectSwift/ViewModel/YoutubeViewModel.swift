@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class YoutubeViewModel: ObservableObject {
-    @Published  var trailers:[YouTubeItem] = []
+    @Published  var trailers: [YouTubeItem] = []
     private var cancellables: Set<AnyCancellable> = []
     private var apiKey: String {
         guard let apiKey = ProcessInfo.processInfo.environment["YOUTUBE_API_KEY"] else {
@@ -17,19 +17,19 @@ class YoutubeViewModel: ObservableObject {
         }
         return apiKey
     }
-    
+
     func fetchTrailer(query: String) {
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {return}
         guard let url = URL(string: "https://youtube.googleapis.com/youtube/v3/search?q=\(query)&key=\(apiKey)") else {
             return
         }
-        
+
         URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: YouTubeData.self, decoder: JSONDecoder())
             .map(\.items)
             .receive(on: DispatchQueue.main)
-            .sink (receiveCompletion: { completion in
+            .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
                     break
@@ -44,7 +44,6 @@ class YoutubeViewModel: ObservableObject {
                                }
             })
             .store(in: &cancellables)
-
 
     }
 }

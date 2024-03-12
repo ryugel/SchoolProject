@@ -26,7 +26,7 @@ struct TMDBDetailView: View {
                             .frame(height: sizeClass == .regular ? 600:200)
                     }
                 }
-                
+
                 HStack {
                     Text(show.overview ?? "")
                         .font(.body)
@@ -35,24 +35,24 @@ struct TMDBDetailView: View {
                         .padding(.horizontal, 10)
                         .background(Color(.systemBackground).opacity(0.05))
                         .cornerRadius(10)
-                    
+
                     Spacer()
                 }
-                
+
                 HStack {
                     Text("Stars:")
                         .font(.headline)
                         .foregroundColor(.primary)
-                    
+
                     ForEach(1...5, id: \.self) { index in
                         Image(systemName: index <= Int(show.voteAverage / 2) ? "star.fill" : "star")
                             .foregroundColor(.yellow)
                     }
-                    
+
                     Spacer()
-                    
+
                     Button(action: {
-                        
+
                         if isInFavorites {
                             userViewModel.removeFromFavorites(show)
                             isFavorited = false
@@ -67,7 +67,7 @@ struct TMDBDetailView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 .padding(.horizontal)
-                
+
                 Spacer()
             }
             .padding()
@@ -84,28 +84,27 @@ struct TMDBDetailView: View {
         guard let user = userViewModel.user else { return false }
         return user.favorites.contains { $0.id == show.id }
     }
-    func getUser() async  {
+    func getUser() async {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else { return }
         await MainActor.run {
             myProfile = user
         }
     }
-    
+
 }
 
 struct TrailerView: View {
     let videoID: String
-    
+
     var body: some View {
         WebView(urlString: "https://www.youtube.com/embed/\(videoID)")
     }
 }
 
-
 struct WebView: UIViewRepresentable {
     let urlString: String
-    
+
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         if let url = URL(string: urlString) {
@@ -113,7 +112,6 @@ struct WebView: UIViewRepresentable {
         }
         return webView
     }
-    
+
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 }
-

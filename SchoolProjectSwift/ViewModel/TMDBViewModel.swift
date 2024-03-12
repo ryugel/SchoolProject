@@ -9,22 +9,20 @@ import Foundation
 import Combine
 
 class TMDBViewModel: ObservableObject {
-    @Published var trendings:[TMDB] = []
-    @Published var topRated:[TMDB] = []
-    @Published var popular:[TMDB] = []
-    @Published var upcoming:[TMDB] = []
-    @Published var airing:[TMDB] = []
-    private var cancellables:Set<AnyCancellable> = []
-    
-  
-    
+    @Published var trendings: [TMDB] = []
+    @Published var topRated: [TMDB] = []
+    @Published var popular: [TMDB] = []
+    @Published var upcoming: [TMDB] = []
+    @Published var airing: [TMDB] = []
+    private var cancellables: Set<AnyCancellable> = []
+
     func fetchTMDBData(tmdbUrl: TMDBURL) {
-        
+
         guard let url = tmdbUrl.url else {
                   print("Invalid URL for : \(tmdbUrl)")
                   return
               }
-        
+
         URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: TMDBMResponse.self, decoder: JSONDecoder())
@@ -53,7 +51,7 @@ class TMDBViewModel: ObservableObject {
             })
             .store(in: &cancellables)
     }
-   
+
 }
 enum TMDBURL {
     case trending
@@ -61,16 +59,16 @@ enum TMDBURL {
     case popular
     case upcoming
     case airing
-    
+
     private var apiKey: String {
         guard let apiKey = ProcessInfo.processInfo.environment["MOVIEDB_API_KEY"] else {
             return "API key not set. Please set the MOVIEDB_API_KEY environment variable."
         }
         return apiKey
     }
-    
+
     var url: URL? {
-        var urlString:String
+        var urlString: String
         switch self {
         case .trending:
             urlString =  "https://api.themoviedb.org/3/trending/movie/week?api_key=\(apiKey)"
@@ -87,4 +85,3 @@ enum TMDBURL {
     }
 
 }
-

@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SearchBar: View {
-    @Binding var txt :String
+    @Binding var txt: String
     var body: some View {
         HStack(spacing: 15) {
                    Image(systemName: "magnifyingglass")
                        .font(.body)
                        .foregroundColor(.white)
-                   
+
                    TextField("Search For Movies, Shows", text: $txt)
                 .foregroundColor(.white.opacity(0.5))
                }
@@ -22,4 +22,3 @@ struct SearchBar: View {
                .background(Color.clear.opacity(0.5))
     }
 }
-

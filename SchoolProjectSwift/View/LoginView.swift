@@ -13,7 +13,7 @@ import FirebaseFirestore
 
 struct ContentView: View {
     @StateObject var viewModel = LoginViewModel()
-    
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -28,11 +28,11 @@ struct ContentView: View {
                 TextField("Email", text: $viewModel.email)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 SecureField("Password", text: $viewModel.password)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 Button(action: {
                     viewModel.login()
                 }, label: {
@@ -55,7 +55,7 @@ struct ContentView: View {
                         .foregroundStyle(.white)
                         .font(.subheadline)
                 }
-                
+
                 Button(action: {
                     viewModel.resetPassword()
                 }) {
@@ -63,7 +63,7 @@ struct ContentView: View {
                         .font(.subheadline)
                         .foregroundStyle(.gray)
                 }.alert("Link sent", isPresented: $viewModel.alert) {}
-                
+
                 Spacer()
             }
             .overlay {
@@ -107,25 +107,25 @@ struct SignView: View {
                     viewModel.showImagePicker.toggle()
                 }
                 .contentShape(Circle())
-                
+
                 TextField("Username", text: $viewModel.userName)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 TextField("Email", text: $viewModel.email)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 SecureField("Password", text: $viewModel.password)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 SecureField("Password", text: $viewModel.password2)
                     .padding()
                     .background(.ultraThickMaterial)
-                
+
                 signButton()
-                
+
                 Button(action: {
                     dismiss()
                 }) {
@@ -146,14 +146,14 @@ struct SignView: View {
                         guard let imageData = try await newValue.loadTransferable(type: Data.self) else { return }
                         viewModel.ProfilePic = imageData
                     } catch {
-                        
+
                     }
                 }
             }
         })
         .alert(viewModel.errorMsg, isPresented: $viewModel.showError) {}
     }
-    
+
     func signButton() -> some View {
         Button(action: {
             viewModel.registerAccount()
@@ -180,7 +180,7 @@ extension View {
 
 struct LoadingView: View {
     @Binding var showing: Bool
-    
+
     var body: some View {
         ZStack {
             if showing {

@@ -12,7 +12,7 @@ import NukeUI
 import Nuke
 
 struct HomeView: View {
-    @State  var myProfile:User?
+    @State  var myProfile: User?
     @EnvironmentObject private var vm: TMDBViewModel
     private let pipeline = ImagePipeline {
         $0.dataCache = try? DataCache(name: "com.myapp.datacache")
@@ -29,7 +29,7 @@ struct HomeView: View {
                     .environmentObject(vm)
                     .tabItem {
                         Image(systemName: "clock.fill")
-                        
+
                     }
                 FavoritesView()
                     .tabItem {
@@ -41,7 +41,7 @@ struct HomeView: View {
                 }
             }
             .navigationBarItems(leading:
-                                    HStack(spacing: 26){
+                                    HStack(spacing: 26) {
                 Text("Netflixless")
                     .font(.largeTitle).bold()
                     .foregroundColor(Color.color1)
@@ -49,7 +49,7 @@ struct HomeView: View {
                 Spacer()
                 NavigationLink {
                     SearchView()
-                    
+
                 } label: {
                     Image(systemName: "magnifyingglass")
                         .font(.body)
@@ -58,7 +58,7 @@ struct HomeView: View {
                 NavigationLink {
                     myProfile.map { ProfileView(myProfile: $0) }
                 } label: {
-                    LazyImage(url: myProfile?.pictureURL){image in
+                    LazyImage(url: myProfile?.pictureURL) {image in
                         image.image?
                             .resizable()
                             .frame(width: 35, height: 35)
@@ -71,8 +71,8 @@ struct HomeView: View {
             )
         }
     }
-    
-    func getUser() async  {
+
+    func getUser() async {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         guard let user = try? await Firestore.firestore().collection("Users").document(userUID).getDocument(as: User.self) else { return }
         await MainActor.run {
@@ -80,4 +80,3 @@ struct HomeView: View {
         }
     }
 }
-

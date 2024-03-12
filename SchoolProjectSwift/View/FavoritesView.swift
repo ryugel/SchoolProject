@@ -13,12 +13,12 @@ struct FavoritesView: View {
     @StateObject private var userViewModel = UserViewModel()
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+
     var body: some View {
         VStack {
             if let favorites = userViewModel.user?.favorites, !favorites.isEmpty {
                 ScrollView {
-                    HStack() {
+                    HStack {
                         Text("Favorites")
                             .bold()
                             .font(.headline)
@@ -54,7 +54,6 @@ struct FavoritesView: View {
         }
     }
 }
-
 
 #Preview {
     FavoritesView()

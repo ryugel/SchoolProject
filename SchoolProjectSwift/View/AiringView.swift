@@ -16,7 +16,7 @@ struct AiringView: View {
         $0.dataCachePolicy = .storeOriginalData
     }
     @Environment(\.horizontalSizeClass) var sizeClass
-    
+
     var body: some View {
         VStack {
             VStack(spacing: 10) {
@@ -26,18 +26,18 @@ struct AiringView: View {
                         .padding(.vertical, 10)
                         .background(.ultraThinMaterial, in: .buttonBorder)
                 }
-                
+
                 GeometryReader { geo in
                     let size = geo.size
-                    
+
                     ScrollView(.horizontal) {
                         HStack(spacing: 5) {
                             ForEach(vm.airing) { airing in
                                 GeometryReader { proxy in
                                     let cardSize = proxy.size
-                                    
+
                                     let minX = min((proxy.frame(in: .global).minX - 30) * 1.4, size.width * 1.4)
-                                    
+
                                     NavigationLink {
                                         TMDBDetailView(show: airing)
                                     } label: {
@@ -92,9 +92,6 @@ struct AiringView: View {
     }
 }
 
-
 #Preview {
     AiringView()
 }
-
-

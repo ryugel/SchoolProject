@@ -10,13 +10,13 @@ import SwiftUI
 struct UpcomingView: View {
     @EnvironmentObject private var vm: TMDBViewModel
     @Environment(\.horizontalSizeClass) var sizeClass
-    
+
     var body: some View {
         VStack {
             Divider()
-            
+
             ScrollView {
-                HStack() {
+                HStack {
                     Text("Upcoming")
                         .bold()
                         .font(.headline)
