@@ -13,11 +13,11 @@ import FirebaseAuth
 
 class UserViewModel: ObservableObject {
     @Published var user: User?
-    private var db = Firestore.firestore()
+    private var database = Firestore.firestore()
     func fetchUser() async {
         do {
             if let userUID = Auth.auth().currentUser?.uid {
-                let documentSnapshot = try await db.collection("Users").document(userUID).getDocument()
+                let documentSnapshot = try await database.collection("Users").document(userUID).getDocument()
                 try await MainActor.run { [weak self] in
                     self?.user = try documentSnapshot.data(as: User.self)
                 }
@@ -51,7 +51,7 @@ class UserViewModel: ObservableObject {
     private func updateUser(_ user: User) {
         let userID = user.userUID
         do {
-            try db.collection("Users").document(userID).setData(from: user)
+            try database.collection("Users").document(userID).setData(from: user)
         } catch let error {
             print("Error updating user: \(error)")
         }
